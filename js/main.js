@@ -9,29 +9,32 @@ function getRandomNumber(min, max) {
 function createUniqueRandomNumber(min, max) {
   const values = [];
   return function () {
-    while (!values.length <= max - min + 1) {
-      let currentValue = getRandomNumber(min, max);
-      if (values.length >= max - min + 1) {
-        break;
-      }
-      while (values.includes(currentValue)) {
-        currentValue = getRandomNumber(min, max);
-      }
-      values.push(currentValue);
-      return currentValue;
+    let currentValue = getRandomNumber(min, max);
+    if (values.length >= max - min + 1) {
+      return null;
     }
+    while (values.includes(currentValue)) {
+      currentValue = getRandomNumber(min, max);
+    }
+    values.push(currentValue);
+    return currentValue;
   };
 }
 
-const DESCRIPTIONS = ['Какое-то описание.','Ещё какое-то описание.','Какое-то фото.','Ещё какое-то фото.'];
-const NAME = ['Вася', 'Коля', 'Игорь', 'Марина', 'Юля', 'Надя'];
+const DESCRIPTION = [
+  "Какое-то описание.",
+  "Ещё какое-то описание.",
+  "Какое-то фото.",
+  "Ещё какое-то фото.",
+];
+const NAME = ["Вася", "Коля", "Игорь", "Марина", "Юля", "Надя"];
 const MESSAGE = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+  "Всё отлично!",
+  "В целом всё неплохо. Но не всё.",
+  "Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.",
+  "Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.",
+  "Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.",
+  "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!",
 ];
 
 const makeIdNumber = createUniqueRandomNumber(1, 25);
@@ -62,7 +65,7 @@ function createDescriptionsArrey() {
     const object = {
       id: makeIdNumber(),
       url: `photos/${makeUrlNumber()}.jpg`,
-      description: DESCRIPTIONS[getRandomNumber(0, DESCRIPTIONS.length - 1)],
+      description: DESCRIPTION[getRandomNumber(0, DESCRIPTION.length - 1)],
       likes: getRandomNumber(30, 200),
       comments: makeCommetsArrey(),
     };
@@ -71,4 +74,4 @@ function createDescriptionsArrey() {
   return photoDescriptionArrey;
 }
 
-console.log(createDescriptionsArrey());
+console.log(createDescriptionsArrey())
