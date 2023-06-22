@@ -1,34 +1,11 @@
-// Функция создает случайное число в пределах от и до
-
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// Функция создает случайное, неповторяющееся число в пределах от и до
-
-function createUniqueRandomNumber(min, max) {
-  const values = [];
-  return function () {
-    let currentValue = getRandomNumber(min, max);
-    if (values.length >= max - min + 1) {
-      return null;
-    }
-    while (values.includes(currentValue)) {
-      currentValue = getRandomNumber(min, max);
-    }
-    values.push(currentValue);
-    return currentValue;
-  };
-}
-
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   "Какое-то описание.",
   "Ещё какое-то описание.",
   "Какое-то фото.",
   "Ещё какое-то фото.",
 ];
-const NAME = ["Вася", "Коля", "Игорь", "Марина", "Юля", "Надя"];
-const MESSAGE = [
+const NAMES = ["Вася", "Коля", "Игорь", "Марина", "Юля", "Надя"];
+const MESSAGES = [
   "Всё отлично!",
   "В целом всё неплохо. Но не всё.",
   "Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.",
@@ -37,41 +14,57 @@ const MESSAGE = [
   "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!",
 ];
 
-const makeIdNumber = createUniqueRandomNumber(1, 25);
-const makeUrlNumber = createUniqueRandomNumber(1, 25);
-const makeCommentIdNumber = createUniqueRandomNumber(1, 1000);
+const POSTS_COUNTER = 25;
+let idNumber = 1;
+let idCommentNumber = 1;
 
-// Функция создает массив со случайным количеством объектов с комментариями
+// Функция создает случайное число в пределах от и до
 
-function makeCommetsArrey() {
-  const commentsArrey = [];
-  for (let i = 0; i < getRandomNumber(0, 30); i++) {
-    const object = {
-      id: makeCommentIdNumber(),
-      avatar: `avatar/${getRandomNumber(1, 6)}.svg`,
-      message: MESSAGE[getRandomNumber(0, MESSAGE.length - 1)],
-      name: NAME[getRandomNumber(0, NAME.length - 1)],
-    };
-    commentsArrey.push(object);
+const getRandomNumber = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+// Функция возвращает случайный элемент из массива
+
+const getRandomArrayElement = (elements) =>
+  elements[getRandomNumber(0, elements.length - 1)];
+
+// Функция возвращает перемешанный массив
+
+const shuffleArray = (elements) => {
+  for (let i = elements.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = elements[i];
+    elements[i] = elements[j];
+    elements[j] = temp;
   }
-  return commentsArrey;
-}
+  return elements
+};
 
-// Функция создает массив из 25 объектов с описаниями
+const createMessage = (elements) => shuffleArray(elements).slice(0, getRandomNumber(1, 2)).join(' ');
 
-function createDescriptionsArrey() {
-  const photoDescriptionArrey = [];
-  for (let i = 0; i < 25; i++) {
-    const object = {
-      id: makeIdNumber(),
-      url: `photos/${makeUrlNumber()}.jpg`,
-      description: DESCRIPTION[getRandomNumber(0, DESCRIPTION.length - 1)],
-      likes: getRandomNumber(30, 200),
-      comments: makeCommetsArrey(),
-    };
-    photoDescriptionArrey.push(object);
-  }
-  return photoDescriptionArrey;
-}
 
-console.log(createDescriptionsArrey())
+const createComment = () => {
+  return {
+    id: idCommentNumber++,
+    avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
+    message: createMessage(MESSAGES),
+    name: getRandomArrayElement(NAMES),
+  };
+};
+
+const createPost = () => {
+  return {
+    id: idNumber,
+    url: `photos/${idNumber++}.jpg`,
+    likes: getRandomNumber(30, 200),
+    comments: createComments(),
+    description: getRandomArrayElement(DESCRIPTIONS),
+  };
+};
+
+const createComments = () =>
+  Array.from({ length: getRandomNumber(0, 30) }, createComment);
+
+const createPosts = () => Array.from({ length: POSTS_COUNTER }, createPost);
+
+console.log(createPosts());
