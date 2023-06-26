@@ -1,19 +1,24 @@
 import { createPosts } from "./posts-creator.js";
 
-const template = document.querySelector("#picture").content;
-const templateLink = template.querySelector(".picture");
-export const fragment = document.createDocumentFragment();
+const template = document.querySelector("#picture").content.querySelector(".picture");
+const pictureContainer = document.querySelector(".pictures");
+const fragment = document.createDocumentFragment();
 const posts = createPosts();
 
-
-for (let post of posts) {
-  const newPicture = templateLink.cloneNode(true);
-  const searchSelector = (selector) => newPicture.querySelector(selector);
-  searchSelector(".picture__img").src = post.url;
-  searchSelector(".picture__img").alt = post.description;
-  searchSelector(".picture__likes").textContent = post.likes;
-  searchSelector(".picture__comments").textContent = post.comments.length;
+const createPicture = (post) => {
+  const newPicture = template.cloneNode(true);
+  newPicture.querySelector(".picture__img").src = post.url;
+  newPicture.querySelector(".picture__img").alt = post.description;
+  newPicture.querySelector(".picture__likes").textContent = post.likes;
+  newPicture.querySelector(".picture__comments").textContent = post.comments.length;
   fragment.append(newPicture);
 }
+
+const renderImages = () => {
+  posts.forEach((post) => createPicture(post));
+  pictureContainer.append(fragment)
+}
+
+export {renderImages}
 
 

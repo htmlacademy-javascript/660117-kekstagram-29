@@ -1,3 +1,3 @@
-import {fragment} from './images-rendering.js';
+import {renderImages} from './images-rendering.js';
 
-console.log(fragment)
+renderImages()
