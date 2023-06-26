@@ -1,1 +1,3 @@
-import {createPosts} from './images-rendering.js';
+import {fragment} from './images-rendering.js';
+
+console.log(fragment)
