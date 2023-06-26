@@ -1,3 +1,3 @@
-import {createPosts} from './images-filter.js';
+import {fragment} from './images-rendering.js';
 
-console.log(createPosts())
+console.log(fragment)

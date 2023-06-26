@@ -22,4 +22,4 @@ const isMeetingPossible = (start, end, startMeeting, meetingTime) => {
   return false;
 };
 
-console.log(isMeetingPossible("14:00", "17:30", "09:00", 90));
+// console.log(isMeetingPossible("14:00", "17:30", "09:00", 90));
