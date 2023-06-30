@@ -1,3 +1,3 @@
-import {renderImages} from './images-rendering.js';
+import {renderFullPicture} from './render-full-picture.js';
 
-renderImages()
+renderFullPicture()
