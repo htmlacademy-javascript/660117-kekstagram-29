@@ -1,3 +1,5 @@
+const COMMENTS_COUNTER = 5;
+
 const pictureContainer = document.querySelector('.big-picture');
 const pictureImg = pictureContainer.querySelector('img');
 const socialCaption = pictureContainer.querySelector('.social__caption');
@@ -7,32 +9,39 @@ const commentTemplate = document.querySelector('.social__comment');
 const commentsList = document.querySelector('.social__comments');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const pictureCloseButton = document.querySelector('#picture-cancel');
-let postObject = {};
-let startElement = 0;
-let finishElement = 5;
+let comments = [];
+let shownElements = 0;
 
-const fillCommentsList = (comment) => {
+const createComment = (comment) => {
   const newComment = commentTemplate.cloneNode(true);
   newComment.querySelector('.social__picture').src = comment.avatar;
   newComment.querySelector('.social__picture').alt = comment.name;
   newComment.querySelector('.social__text').textContent = comment.message;
-  commentsList.append(newComment);
+  return newComment;
 };
 
-const createCommentsList = () => {
-  if (finishElement >= postObject.comments.length) {
-    finishElement = postObject.comments.length;
+const setloadCommentsButtonState = () => {
+  if (shownElements >= comments.length) {
     loadCommentsButton.classList.add('hidden');
+    return;
   };
-  const comments = postObject.comments.slice(startElement, finishElement);
-  comments.forEach((comment) => fillCommentsList(comment));
+  loadCommentsButton.classList.remove('hidden');
+}
+
+const fillCommentCounter = () => {
   socialCommentCount.innerHTML =
-  `${finishElement} из <span class='comments-count'>${postObject.comments.length}</span> комментариев`;
+  `${shownElements} из <span class='comments-count'>${comments.length}</span> комментариев`;
+}
+
+const createCommentsList = () => {
+  const currentComments = comments.slice(shownElements, shownElements + COMMENTS_COUNTER);
+  currentComments.forEach((comment) => commentsList.append(createComment(comment)));
+  shownElements = Math.min(comments.length, shownElements + COMMENTS_COUNTER);
+  setloadCommentsButtonState();
+  fillCommentCounter();
 }
 
 const loadCommentsButtonClickHandler = () => {
-  startElement += 5;
-  finishElement += 5;
   createCommentsList();
 }
 
@@ -46,9 +55,7 @@ const closeModal = () => {
   pictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loadCommentsButton.removeEventListener('click', loadCommentsButtonClickHandler);
-  loadCommentsButton.classList.remove('hidden');
-  startElement = 0;
-  finishElement = 5;
+  shownElements = 0;
 };
 
 const pictureCloseButtonClickHandler = (event) => {
@@ -69,13 +76,12 @@ const openModal = () => {
   loadCommentsButton.addEventListener('click', loadCommentsButtonClickHandler);
   pictureCloseButton.addEventListener('click', pictureCloseButtonClickHandler, {once: true});
   document.addEventListener('keydown', documentKeydownHandler, {once: true});
-  //Оставил {once: true}, проверял несколько раз оно срабатывает.
 };
 
 const renderBigPicture = (post) => {
   commentsList.innerHTML = '';
   openModal();
-  postObject = post;
+  comments = post.comments;
   fillPictureInfo(post);
   createCommentsList();
 }

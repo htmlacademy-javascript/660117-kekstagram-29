@@ -1,3 +1,5 @@
+import { getRandomArrayElement, shuffleArray, getRandomNumber } from './utils.js';
+
 const DESCRIPTIONS = [
   'Какое-то описание.',
   'Ещё какое-то описание.',
@@ -18,32 +20,9 @@ const POSTS_COUNTER = 25;
 let idNumber = 1;
 let idCommentNumber = 1;
 
-// Функция создает случайное число в пределах от и до
-
-const getRandomNumber = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-
-// Функция возвращает случайный элемент из массива
-
-const getRandomArrayElement = (elements) =>
-  elements[getRandomNumber(0, elements.length - 1)];
-
-// Функция возвращает перемешанный массив
-
-const shuffleArray = (elements) => {
-  for (let i = elements.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    let temp = elements[i];
-    elements[i] = elements[j];
-    elements[j] = temp;
-  }
-  return elements
-};
-
 // Функция возвращает строку из 1 или 2 первых элементов массива
 
 const createMessage = (elements) => shuffleArray(elements).slice(0, getRandomNumber(1, 2)).join(' ');
-
 
 const createComment = () => {
   return {
