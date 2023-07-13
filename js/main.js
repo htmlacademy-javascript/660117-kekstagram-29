@@ -1,4 +1,5 @@
 import { renderImages } from './render-images.js';
-import './upload-image-form.js';
+import { setFormState } from './upload-image-form.js';
 
+setFormState();
 renderImages();

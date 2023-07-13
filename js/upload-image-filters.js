@@ -1,3 +1,50 @@
+const SLIDER_OPTIONS = {
+  chrome: {
+    effect: 'grayscale',
+    min: 0,
+    max: 1,
+    start: 1,
+    step: 0.1,
+  },
+  sepia: {
+    effect: 'sepia',
+    min: 0,
+    max: 1,
+    start: 1,
+    step: 0.1,
+  },
+  marvin: {
+    effect: 'invert',
+    min: 0,
+    max: 100,
+    start: 100,
+    step: 1,
+  },
+  phobos: {
+    effect: 'blur',
+    min: 0,
+    max: 3,
+    start: 3,
+    step: 0.1,
+  },
+  heat: {
+    effect: 'brightness',
+    min: 1,
+    max: 3,
+    start: 3,
+    step: 0.1,
+  }
+}
+const UNITS = {
+  invert: '%',
+  blur: 'px'
+}
+
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const STEP_SCALE = 25;
+
+
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -7,8 +54,6 @@ const effectLevelValue = document.querySelector('.effect-level__value');
 const effectsList = document.querySelector('.effects__list');
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 const effectNone = document.querySelector('#effect-none');
-let effect;
-
 
 const createSlider = () => {
   noUiSlider.create(effectLevelSlider,{
@@ -22,10 +67,9 @@ const createSlider = () => {
   });
 }
 
-const resetStyles = () => {
-  imgUploadPreview.style.filter = '';
-  imgUploadPreview.style.transform = '';
-}
+const resetScale = () => imgUploadPreview.style.transform = '';
+
+const resetStyles = () => imgUploadPreview.style.filter = '';
 
 const setSliderState = () => {
   if(effectNone.checked) {
@@ -36,68 +80,50 @@ const setSliderState = () => {
   }
 }
 
-const createFilterStyle = () => {
-  if(effect === 'invert'){
-    imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}%)`;
-  }
-  if(effect === 'blur'){
-    imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}px)`;
-  }
-  else {
-    imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value})`;
-  }
+const createFilterStyle = (effect) => {
+  const unit = (UNITS[effect])? UNITS[effect] : '';
+  imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}${unit})`;
 }
 
-const fillValueFromSlider = () =>{
+const fillValueFromSlider = (effect) =>{
   effectLevelSlider.noUiSlider.on('update', () => {
     effectLevelValue.value = effectLevelSlider.noUiSlider.get();
-    createFilterStyle();
+    createFilterStyle(effect)
   });
 }
 
-const createSliderUpdateOptions = (currentEffect, min, max, start, step) => {
-  effect = currentEffect;
+const createSliderUpdateOptions = (value) => {
+  const {effect, min, max, start, step} = SLIDER_OPTIONS[value];
   effectLevelSlider.noUiSlider.updateOptions ({
     range: {
       min: min,
       max: max
     },
     start: start,
-    step: step,
-  })
+    step: step
+  });
+  fillValueFromSlider(effect)
 }
 
 const effectsListClickHandler = (event) => {
   setSliderState();
-  if(event.target.closest('#effect-chrome')) {
-    createSliderUpdateOptions('grayscale',0, 1, 1, 0.1);
-  }
-  if(event.target.closest('#effect-sepia')) {
-    createSliderUpdateOptions('sepia',0, 1, 1, 0.1);
-  }
-  if(event.target.closest('#effect-marvin')) {
-    createSliderUpdateOptions('invert',0, 100, 100, 1);
-  }
-  if(event.target.closest('#effect-phobos')) {
-    createSliderUpdateOptions('blur',0, 3, 3, 0.1);
-  }
-  if(event.target.closest('#effect-heat')) {
-    createSliderUpdateOptions('brightness',0, 3, 3, 0.1);
+  if (event.target.value) {
+    createSliderUpdateOptions(event.target.value);
   }
 }
 
 const scaleControlSmallerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value, 10);
-  if (startValue > 25) {
-    scaleControlValue.value = startValue - 25 + '%';
+  const startValue = parseInt(scaleControlValue.value);
+  if (startValue > MIN_SCALE) {
+    scaleControlValue.value = startValue - STEP_SCALE + '%';
   }
   imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
 }
 
 const scaleControlBiggerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value, 10);
-  if (startValue < 100) {
-    scaleControlValue.value = startValue + 25 + '%';
+  const startValue = parseInt(scaleControlValue.value);
+  if (startValue < MAX_SCALE) {
+    scaleControlValue.value = startValue + STEP_SCALE + '%';
   }
   imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
 }
@@ -105,10 +131,9 @@ const scaleControlBiggerClickHandler = () => {
 const createFilters = () => {
   setSliderState();
   createSlider();
-  fillValueFromSlider();
   effectsList.addEventListener('click', effectsListClickHandler);
   scaleControlSmaller.addEventListener('click', scaleControlSmallerClickHandler);
   scaleControlBigger.addEventListener('click', scaleControlBiggerClickHandler);
 }
 
-export { createFilters };
+export { createFilters, resetScale };
