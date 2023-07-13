@@ -6,6 +6,23 @@ const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 
+
+const closeForm = () => {
+  imgUploadOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  imgUploadForm.reset();
+  resetScale();
+  pristineReset();
+}
+
+const imgUploadCancelClickHandler = () => closeForm();
+
+const documentKeydownHandler = (event) => {
+  if (event.keyCode === 27 && !event.target.closest('.img-upload__field-wrapper')) {
+    closeForm();
+  }
+}
+
 const openForm = () => {
   addValidators();
   imgUploadOverlay.classList.remove('hidden');
@@ -19,27 +36,9 @@ const openForm = () => {
   })
 }
 
-const closeForm = () => {
-  imgUploadOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  imgUploadForm.reset();
-  resetScale();
-  pristineReset();
-}
-
 const imgUploadInputChangeHandler = () => {
   openForm();
   createFilters();
-}
-
-function imgUploadCancelClickHandler() {
-  closeForm();
-}
-
-function documentKeydownHandler(event) {
-  if (event.keyCode === 27 && !event.target.closest('.img-upload__field-wrapper')) {
-    closeForm();
-  }
 }
 
 const setFormState = () => {

@@ -29,14 +29,14 @@ const validateDescription = (value) => value.length <= DESCRIPTION_MAX_LENGTH;
 const validateHashtags = (value) => {
   if (value) {
     const hashtags = createHashtags(value);
-    return hashtags.every(hashtag => HASHTAG_REG.test(hashtag) === true);
+    return hashtags.every((hashtag) => HASHTAG_REG.test(hashtag) === true);
   }
   return true;
 }
 
 const countHashtags = (value) => {
   const hashtags = createHashtags(value);
-  return hashtags.length < HASHTAG_MAX_COUNTER;
+  return hashtags.length <= HASHTAG_MAX_COUNTER;
 }
 
 const addValidators = () => {

@@ -81,7 +81,7 @@ const setSliderState = () => {
 }
 
 const createFilterStyle = (effect) => {
-  const unit = (UNITS[effect])? UNITS[effect] : '';
+  const unit = (UNITS[effect]) ? UNITS[effect] : '';
   imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}${unit})`;
 }
 
@@ -113,17 +113,17 @@ const effectsListClickHandler = (event) => {
 }
 
 const scaleControlSmallerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value);
+  const startValue = parseInt(scaleControlValue.value, 10);
   if (startValue > MIN_SCALE) {
-    scaleControlValue.value = startValue - STEP_SCALE + '%';
+    scaleControlValue.value = `${startValue - STEP_SCALE}` + '%';
   }
   imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
 }
 
 const scaleControlBiggerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value);
+  const startValue = parseInt(scaleControlValue.value, 10);
   if (startValue < MAX_SCALE) {
-    scaleControlValue.value = startValue + STEP_SCALE + '%';
+    scaleControlValue.value = `${startValue + STEP_SCALE}` + '%';
   }
   imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
 }
