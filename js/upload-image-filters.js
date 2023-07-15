@@ -5,6 +5,7 @@ const SLIDER_OPTIONS = {
     max: 1,
     start: 1,
     step: 0.1,
+    unit: '',
   },
   sepia: {
     effect: 'sepia',
@@ -12,6 +13,7 @@ const SLIDER_OPTIONS = {
     max: 1,
     start: 1,
     step: 0.1,
+    unit: '',
   },
   marvin: {
     effect: 'invert',
@@ -19,6 +21,7 @@ const SLIDER_OPTIONS = {
     max: 100,
     start: 100,
     step: 1,
+    unit: '%',
   },
   phobos: {
     effect: 'blur',
@@ -26,6 +29,7 @@ const SLIDER_OPTIONS = {
     max: 3,
     start: 3,
     step: 0.1,
+    unit: 'px',
   },
   heat: {
     effect: 'brightness',
@@ -33,67 +37,45 @@ const SLIDER_OPTIONS = {
     max: 3,
     start: 3,
     step: 0.1,
-  }
-}
-const UNITS = {
-  invert: '%',
-  blur: 'px'
-}
-
-const MIN_SCALE = 25;
-const MAX_SCALE = 100;
-const STEP_SCALE = 25;
-
-
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview').querySelector('img');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectsList = document.querySelector('.effects__list');
-const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
-const effectNone = document.querySelector('#effect-none');
-
-const createSlider = () => {
-  noUiSlider.create(effectLevelSlider,{
-    range: {
-      min: 0,
-      max: 1
-    },
+    unit: '',
+  },
+  default: {
+    min: 0,
+    max: 1,
     start: 1,
     step: 0.1,
     connect: 'lower',
-  });
-}
-
-const resetScale = () => imgUploadPreview.style.transform = '';
-
-const resetStyles = () => imgUploadPreview.style.filter = '';
-
-const setSliderState = () => {
-  if(effectNone.checked) {
-    imgUploadEffectLevel.classList.add('hidden');
-    resetStyles()
-  } else {
-    imgUploadEffectLevel.classList.remove('hidden');
   }
 }
 
-const createFilterStyle = (effect) => {
-  const unit = (UNITS[effect]) ? UNITS[effect] : '';
-  imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}${unit})`;
-}
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevelValue = document.querySelector('.effect-level__value');
+const effectsList = document.querySelector('.img-upload__effects');
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 
-const fillValueFromSlider = (effect) =>{
+const createSlider = () => {
+  const {min, max, start, step, connect} = SLIDER_OPTIONS.default;
+  noUiSlider.create(effectLevelSlider,{
+    range: {
+      min: min,
+      max: max
+    },
+    start: start,
+    step: step,
+    connect: connect,
+  });
+};
+
+const fillValueFromSlider = (effect, unit) =>{
   effectLevelSlider.noUiSlider.on('update', () => {
     effectLevelValue.value = effectLevelSlider.noUiSlider.get();
-    createFilterStyle(effect)
+    imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}${unit})`;
   });
-}
+};
 
 const createSliderUpdateOptions = (value) => {
-  const {effect, min, max, start, step} = SLIDER_OPTIONS[value];
+  const {effect, min, max, start, step, unit} = SLIDER_OPTIONS[value];
   effectLevelSlider.noUiSlider.updateOptions ({
     range: {
       min: min,
@@ -102,38 +84,26 @@ const createSliderUpdateOptions = (value) => {
     start: start,
     step: step
   });
-  fillValueFromSlider(effect)
-}
+  fillValueFromSlider(effect, unit);
+};
 
-const effectsListClickHandler = (event) => {
-  setSliderState();
-  if (event.target.value) {
-    createSliderUpdateOptions(event.target.value);
+const setSliderState = (value) => {
+  if(value === 'none') {
+    imgUploadEffectLevel.classList.add('hidden');
+    imgUploadPreview.style.filter = '';
+    return;
   }
-}
+  imgUploadEffectLevel.classList.remove('hidden');
+  createSliderUpdateOptions(value);
+};
 
-const scaleControlSmallerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value, 10);
-  if (startValue > MIN_SCALE) {
-    scaleControlValue.value = `${startValue - STEP_SCALE}` + '%';
-  }
-  imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
-}
-
-const scaleControlBiggerClickHandler = () => {
-  const startValue = parseInt(scaleControlValue.value, 10);
-  if (startValue < MAX_SCALE) {
-    scaleControlValue.value = `${startValue + STEP_SCALE}` + '%';
-  }
-  imgUploadPreview.style.transform = `scale(${scaleControlValue.value})`;
-}
+const effectsListChangeHandler = (event) => {
+  setSliderState(event.target.value);
+};
 
 const createFilters = () => {
-  setSliderState();
   createSlider();
-  effectsList.addEventListener('click', effectsListClickHandler);
-  scaleControlSmaller.addEventListener('click', scaleControlSmallerClickHandler);
-  scaleControlBigger.addEventListener('click', scaleControlBiggerClickHandler);
+  effectsList.addEventListener('change', effectsListChangeHandler);
 }
 
-export { createFilters, resetScale };
+export { createFilters, setSliderState};

@@ -1,11 +1,12 @@
-import { createFilters, resetScale } from './upload-image-filters.js';
+import { createFilters, setSliderState } from './upload-image-filters.js';
 import { addValidators, pristineValidate, pristineReset } from './validators.js';
+import { initScaleControl, resetScale } from './upload-image-scale.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
-
+const inputChecked = document.querySelector('.img-upload__form input:checked');
 
 const closeForm = () => {
   imgUploadOverlay.classList.add('hidden');
@@ -24,26 +25,30 @@ const documentKeydownHandler = (event) => {
 }
 
 const openForm = () => {
-  addValidators();
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  imgUploadCancel.addEventListener('click', imgUploadCancelClickHandler), {once: true};
-  document.body.addEventListener('keydown', documentKeydownHandler), {once: true};
-  imgUploadForm.addEventListener('submit', (event) => {
-    if (!pristineValidate()){
-      event.preventDefault();
-    }
-  })
+  setSliderState(inputChecked.value);
 }
 
 const imgUploadInputChangeHandler = () => {
   openForm();
+}
+
+const imgUploadFormSubmitHandler = (event) => {
+  if (!pristineValidate()){
+    event.preventDefault();
+  }
+};
+
+const initFormState = () => {
+  addValidators();
   createFilters();
-}
-
-const setFormState = () => {
+  initScaleControl();
+  imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
   imgUploadInput.addEventListener('change', imgUploadInputChangeHandler);
-}
+  imgUploadCancel.addEventListener('click', imgUploadCancelClickHandler);
+  document.body.addEventListener('keydown', documentKeydownHandler);
+};
 
-export {setFormState};
+export {initFormState};
 
