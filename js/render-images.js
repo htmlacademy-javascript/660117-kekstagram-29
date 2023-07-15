@@ -23,7 +23,7 @@ const createPicture = (post) => {
 
 const renderImages = () => {
   posts.forEach((post) => createPicture(post));
-  pictureContainer.append(fragment)
+  pictureContainer.append(fragment);
 }
 
 export { renderImages }

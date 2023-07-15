@@ -24,7 +24,7 @@ const setloadCommentsButtonState = () => {
   if (shownElements >= comments.length) {
     loadCommentsButton.classList.add('hidden');
     return;
-  };
+  }
   loadCommentsButton.classList.remove('hidden');
 }
 
