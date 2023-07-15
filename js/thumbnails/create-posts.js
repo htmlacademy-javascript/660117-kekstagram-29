@@ -1,4 +1,4 @@
-import { getRandomArrayElement, shuffleArray, getRandomNumber } from './utils.js';
+import { getRandomArrayElement, shuffleArray, getRandomNumber } from '../utils/utils.js';
 
 const DESCRIPTIONS = [
   'Какое-то описание.',

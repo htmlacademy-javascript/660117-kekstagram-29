@@ -46,7 +46,7 @@ const SLIDER_OPTIONS = {
     step: 0.1,
     connect: 'lower',
   }
-}
+};
 
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
@@ -104,6 +104,6 @@ const effectsListChangeHandler = (event) => {
 const createFilters = () => {
   createSlider();
   effectsList.addEventListener('change', effectsListChangeHandler);
-}
+};
 
 export { createFilters, setSliderState};

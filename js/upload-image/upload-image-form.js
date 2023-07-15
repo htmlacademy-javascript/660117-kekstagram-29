@@ -14,7 +14,7 @@ const closeForm = () => {
   imgUploadForm.reset();
   resetScale();
   pristineReset();
-}
+};
 
 const imgUploadCancelClickHandler = () => closeForm();
 
@@ -22,17 +22,17 @@ const documentKeydownHandler = (event) => {
   if (event.keyCode === 27 && !event.target.closest('.img-upload__field-wrapper')) {
     closeForm();
   }
-}
+};
 
 const openForm = () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   setSliderState(inputChecked.value);
-}
+};
 
 const imgUploadInputChangeHandler = () => {
   openForm();
-}
+};
 
 const imgUploadFormSubmitHandler = (event) => {
   if (!pristineValidate()){
