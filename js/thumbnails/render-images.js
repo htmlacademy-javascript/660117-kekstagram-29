@@ -1,4 +1,7 @@
 import { renderBigPicture } from './render-big-picture.js';
+import { getData } from '../server/server.js';
+
+const SERVER_URL = 'https://29.javascript.pages.academy/kekstagram/data';
 
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
@@ -19,9 +22,13 @@ const createPicture = (post) => {
   fragment.append(newPicture);
 };
 
-const renderImages = (posts) => {
+const renderImagesFromServer = (posts) => {
   posts.forEach((post) => createPicture(post));
   pictureContainer.append(fragment);
+};
+
+const renderImages = () => {
+  getData(SERVER_URL, renderImagesFromServer);
 };
 
 export { renderImages };

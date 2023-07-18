@@ -68,6 +68,7 @@ const createSlider = () => {
 };
 
 const fillValueFromSlider = (effect, unit) =>{
+  effectLevelSlider.noUiSlider.off('update');
   effectLevelSlider.noUiSlider.on('update', () => {
     effectLevelValue.value = effectLevelSlider.noUiSlider.get();
     imgUploadPreview.style.filter = `${effect}(${effectLevelValue.value}${unit})`;
