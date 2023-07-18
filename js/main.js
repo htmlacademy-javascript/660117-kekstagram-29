@@ -1,6 +1,7 @@
-import { renderImages } from './thumbnails/render-images.js';
 import { initFormState } from './upload-image/upload-image-form.js';
+import { renderImagesFromServer } from './server/server.js';
 
-renderImages();
+
+renderImagesFromServer();
 initFormState();
 

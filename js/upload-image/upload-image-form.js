@@ -1,6 +1,7 @@
 import { createFilters, setSliderState } from './upload-image-filters.js';
 import { addValidators, pristineValidate, pristineReset } from './validators.js';
 import { initScaleControl, resetScale } from './upload-image-scale.js';
+import { uploadImage } from '../server/server.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -31,12 +32,16 @@ const openForm = () => {
 };
 
 const imgUploadInputChangeHandler = () => {
+  document.body.addEventListener('keydown', documentKeydownHandler);
   openForm();
 };
 
 const imgUploadFormSubmitHandler = (event) => {
-  if (!pristineValidate()){
-    event.preventDefault();
+  event.preventDefault();
+  if (pristineValidate()) {
+    document.body.removeEventListener('keydown', documentKeydownHandler);
+    const formData = new FormData(event.target);
+    uploadImage(formData, closeForm);
   }
 };
 
@@ -47,7 +52,6 @@ const initFormState = () => {
   imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
   imgUploadInput.addEventListener('change', imgUploadInputChangeHandler);
   imgUploadCancel.addEventListener('click', imgUploadCancelClickHandler);
-  document.body.addEventListener('keydown', documentKeydownHandler);
 };
 
 export {initFormState};
