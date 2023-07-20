@@ -35,4 +35,4 @@ const initScaleControl = () => {
   scaleControlBigger.addEventListener('click', scaleControlBiggerClickHandler);
 };
 
-export { initScaleControl, resetScale }
+export { initScaleControl, resetScale };

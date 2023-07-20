@@ -26,12 +26,12 @@ const setloadCommentsButtonState = () => {
     return;
   }
   loadCommentsButton.classList.remove('hidden');
-}
+};
 
 const fillCommentCounter = () => {
   socialCommentCount.innerHTML =
   `${shownElements} из <span class='comments-count'>${comments.length}</span> комментариев`;
-}
+};
 
 const createCommentsList = () => {
   const currentComments = comments.slice(shownElements, shownElements + COMMENTS_COUNTER);
@@ -39,11 +39,11 @@ const createCommentsList = () => {
   shownElements = Math.min(comments.length, shownElements + COMMENTS_COUNTER);
   setloadCommentsButtonState();
   fillCommentCounter();
-}
+};
 
 const loadCommentsButtonClickHandler = () => {
   createCommentsList();
-}
+};
 
 const fillPictureInfo = (post) => {
   pictureImg.src = post.url;
@@ -61,14 +61,14 @@ const closeModal = () => {
 const pictureCloseButtonClickHandler = (event) => {
   event.preventDefault();
   closeModal();
-}
+};
 
 const documentKeydownHandler = (event) => {
   event.preventDefault();
   if (event.keyCode === 27 && !event.target.closest('.social__footer-text')) {
     closeModal();
   }
-}
+};
 
 const openModal = () => {
   pictureContainer.classList.remove('hidden');
@@ -84,6 +84,6 @@ const renderBigPicture = (post) => {
   comments = post.comments;
   fillPictureInfo(post);
   createCommentsList();
-}
+};
 
 export { renderBigPicture };

@@ -1,10 +1,11 @@
-import { createPosts } from './create-posts.js';
 import { renderBigPicture } from './render-big-picture.js';
+import { getData } from '../server/server.js';
+
+const SERVER_URL = 'https://29.javascript.pages.academy/kekstagram/data';
 
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const pictureContainer = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
-const posts = createPosts();
 
 
 const createPicture = (post) => {
@@ -16,14 +17,18 @@ const createPicture = (post) => {
   newPicture.querySelector('.picture__comments').textContent = post.comments.length;
   newPicture.addEventListener('click', (event) => {
     event.preventDefault();
-    renderBigPicture(post)
+    renderBigPicture(post);
   });
   fragment.append(newPicture);
-}
+};
 
-const renderImages = () => {
+const renderImagesFromServer = (posts) => {
   posts.forEach((post) => createPicture(post));
   pictureContainer.append(fragment);
-}
+};
 
-export { renderImages }
+const renderImages = () => {
+  getData(SERVER_URL, renderImagesFromServer);
+};
+
+export { renderImages };
