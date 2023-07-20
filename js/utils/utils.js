@@ -20,4 +20,3 @@ const shuffleArray = (elements) => {
   return elements;
 };
 
-export { getRandomArrayElement, shuffleArray, getRandomNumber };
