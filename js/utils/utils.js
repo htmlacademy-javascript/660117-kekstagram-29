@@ -21,6 +21,3 @@ const shuffleArray = (elements) => {
 };
 
 export { getRandomArrayElement, shuffleArray, getRandomNumber };
-
-
-// Просто новые строчки чтобы отправить коммит)
