@@ -1,7 +1,9 @@
-import { createFilters, setSliderState } from './upload-image-filters.js';
-import { addValidators, pristineValidate, pristineReset } from './validators.js';
-import { initScaleControl, resetScale } from './upload-image-scale.js';
-import { sendData } from '../server/server.js';
+import { createFilters, setSliderState } from './init-filters.js';
+import { addValidators, pristineValidate, pristineReset } from './init-validators.js';
+import { initScaleControl, resetScale } from './init-scale.js';
+import { sendData } from '../utils/api.js';
+import { insertPhoto } from './insert-photo.js';
+import { isEscKey } from '../utils/utils.js';
 
 const SERVER_URL = 'https://29.javascript.pages.academy/kekstagram';
 
@@ -27,7 +29,7 @@ const closeForm = () => {
 const imgUploadCancelClickHandler = () => closeForm();
 
 const documentKeydownHandler = (event) => {
-  if (event.keyCode === 27 && !event.target.closest('.img-upload__field-wrapper')) {
+  if (isEscKey(event) && !event.target.closest('.img-upload__field-wrapper')) {
     closeForm();
   }
 };
@@ -41,6 +43,7 @@ const openForm = () => {
 const imgUploadInputChangeHandler = () => {
   document.body.addEventListener('keydown', documentKeydownHandler);
   openForm();
+  insertPhoto();
 };
 
 const imgUploadFormSubmitHandler = (event) => {
@@ -53,7 +56,7 @@ const imgUploadFormSubmitHandler = (event) => {
   }
 };
 
-const initFormState = () => {
+const initForm = () => {
   addValidators();
   createFilters();
   initScaleControl();
@@ -62,5 +65,5 @@ const initFormState = () => {
   imgUploadCancel.addEventListener('click', imgUploadCancelClickHandler);
 };
 
-export {initFormState};
+export {initForm, insertPhoto};
 

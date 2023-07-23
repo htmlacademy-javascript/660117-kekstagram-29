@@ -1,22 +1,19 @@
-// Функция создает случайное число в пределах от и до
-
-const getRandomNumber = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-
-// Функция возвращает случайный элемент из массива
-
-const getRandomArrayElement = (elements) =>
-  elements[getRandomNumber(0, elements.length - 1)];
-
-// Функция возвращает перемешанный массив
+const isEscKey = (event) => event.keyCode === 27;
 
 const shuffleArray = (elements) => {
   for (let i = elements.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    let temp = elements[i];
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = elements[i];
     elements[i] = elements[j];
     elements[j] = temp;
   }
   return elements;
 };
 
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
