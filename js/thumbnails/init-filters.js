@@ -9,9 +9,6 @@ const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
 const imgFilter = document.querySelector('.img-filters');
 const filterForm = document.querySelector('.img-filters__form');
-const button = document.querySelector('.img-filters__button');
-
-const sortArray = (a, b) => b.comments.length - a.comments.length;
 
 const createNewData = (data, target) => {
   if (target === filterDefault) {
@@ -19,7 +16,7 @@ const createNewData = (data, target) => {
   }
   if (target === filterDiscussed) {
     const newThumbnails = Array.from(data);
-    newThumbnails.sort(sortArray);
+    newThumbnails.sort((a, b) => b.comments.length - a.comments.length);
     return newThumbnails;
   }
   if (target === filterRandom) {
@@ -45,7 +42,6 @@ const inItFilters = (data) => {
       changeThumbnails(data, target);
     }
   });
-
 };
 
-export { inItFilters };
+export { inItFilters, createNewData };

@@ -1,3 +1,5 @@
+import {isEscKey} from '../utils/utils.js';
+
 const COMMENTS_COUNTER = 5;
 
 const pictureContainer = document.querySelector('.big-picture');
@@ -65,7 +67,7 @@ const pictureCloseButtonClickHandler = (event) => {
 
 const documentKeydownHandler = (event) => {
   event.preventDefault();
-  if (event.keyCode === 27 && !event.target.closest('.social__footer-text')) {
+  if (isEscKey(event) && !event.target.closest('.social__footer-text')) {
     closeModal();
   }
 };

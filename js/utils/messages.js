@@ -1,4 +1,7 @@
+import { isEscKey } from './utils.js';
+
 const ERROR_RENDER_MESSAGE = 'Что-то пошло не так =( Попробуйте перезагрузить страницу.';
+const ERROR_RENDER_MESSAGE_TIMEOUT = 4000;
 
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -21,7 +24,7 @@ function messageClickHandler (event) {
 }
 
 function messageKeydownHandler (event) {
-  if(event.keyCode === 27) {
+  if(isEscKey(event)) {
     closeMessage();
   }
 }
@@ -40,11 +43,12 @@ const createUploadErrorMessage = () => {
   return message;
 };
 
-const createRenderErrorMessage = () => {
+const showErrorMessage = () => {
   const message = document.createElement('div');
   message.classList.add('error-upload-message');
   message.textContent = ERROR_RENDER_MESSAGE;
-  return message;
+  document.body.append(message);
+  setTimeout(() => document.querySelector('.error-upload-message').remove(), ERROR_RENDER_MESSAGE_TIMEOUT);
 };
 
-export { createRenderErrorMessage, createUploadErrorMessage, createUploadSuccessMessage };
+export { showErrorMessage, createUploadErrorMessage, createUploadSuccessMessage };

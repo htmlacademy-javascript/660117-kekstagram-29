@@ -1,16 +1,18 @@
-import { getData } from '../server/server.js';
+import { getData } from '../utils/api.js';
 import { renderThumbnails } from './render-thumbnails.js';
-import { inItFilters } from '../thumbnails/thumbnails-filter.js';
+import { inItFilters, createNewData } from './init-filters.js';
 
 const SERVER_URL = 'https://29.javascript.pages.academy/kekstagram/data';
 
+const currentFilter = document.querySelector('.img-filters__button--active');
+
 const renderThumbnailsFromServer = (data) => {
-  renderThumbnails(data);
+  renderThumbnails(createNewData(data, currentFilter));
   inItFilters(data);
 };
 
-const renderImages = () => {
+const initThumbnails = () => {
   getData(SERVER_URL, renderThumbnailsFromServer);
 };
 
-export { renderImages };
+export { initThumbnails };

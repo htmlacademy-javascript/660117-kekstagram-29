@@ -1,10 +1,10 @@
-import { createRenderErrorMessage, createUploadErrorMessage, createUploadSuccessMessage } from './messages.js';
+import { showErrorMessage, createUploadErrorMessage, createUploadSuccessMessage } from './messages.js';
 
 const getData = (url, onSuccess) => {
   fetch(url)
     .then((response) => response.json())
     .then((data) => onSuccess(data))
-    .catch(() => document.body.append(createRenderErrorMessage()));
+    .catch(() => showErrorMessage());
 };
 
 const sendData = (url, data, onSuccess, setSubmitButton) => {

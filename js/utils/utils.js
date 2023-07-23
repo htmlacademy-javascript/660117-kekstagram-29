@@ -1,3 +1,5 @@
+const isEscKey = (event) => event.keyCode === 27;
+
 const shuffleArray = (elements) => {
   for (let i = elements.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -16,4 +18,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 }
 
-export { shuffleArray, debounce };
+export { shuffleArray, debounce, isEscKey };
