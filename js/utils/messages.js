@@ -1,54 +1,51 @@
 import { isEscKey } from './utils.js';
 
-const ERROR_RENDER_MESSAGE = 'Что-то пошло не так =( Попробуйте перезагрузить страницу.';
-const ERROR_RENDER_MESSAGE_TIMEOUT = 4000;
+let message;
+let isOpen = false;
 
-const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const createTemplate = (type, messageText, buttonText) => (
+  `<section class="${type}">
+    <div class="${type}__inner">
+      <h2 class="${type}__title">${messageText}</h2>
+      ${buttonText ? `<button type="button" class="${type}__button">${buttonText}</button>` : ''}
+    </div>
+  </section>`
+);
 
-const closeMessage = () => {
-  const message = document.querySelector('.success') || document.querySelector('.error');
-  message.remove();
-  document.body.removeEventListener('click', messageClickHandler);
-  document.body.removeEventListener('keydown', messageKeydownHandler);
+const createMessage = (template) => {
+  message = document.createElement('div');
+  message.innerHTML = template;
+  return message.firstChild;
 };
 
-function messageClickHandler (event) {
-  if(!event.target.closest('.success__inner') || event.target.closest('.success__button')){
-    closeMessage();
-    return;
+const closeMessage = () => {
+  message.remove();
+  document.body.removeEventListener('keydown', documentKeydownHandler);
+  if (!isOpen) {
+    document.body.classList.remove('modal-open');
   }
-  if(!event.target.closest('.error__inner') || event.target.closest('.error__button')){
-    closeMessage();
-  }
-}
+};
 
-function messageKeydownHandler (event) {
+function documentKeydownHandler(event) {
   if(isEscKey(event)) {
     closeMessage();
   }
 }
 
-const createUploadSuccessMessage = () => {
-  const message = successMessageTemplate.cloneNode(true);
-  document.body.addEventListener('click', messageClickHandler);
-  document.body.addEventListener('keydown', messageKeydownHandler);
-  return message;
-};
-
-const createUploadErrorMessage = () => {
-  const message = errorMessageTemplate.cloneNode(true);
-  document.body.addEventListener('click', messageClickHandler);
-  document.body.addEventListener('keydown', messageKeydownHandler);
-  return message;
-};
-
-const showErrorMessage = () => {
-  const message = document.createElement('div');
-  message.classList.add('error-upload-message');
-  message.textContent = ERROR_RENDER_MESSAGE;
+const showMessage = (type, messageText, buttonText) => {
+  message = createMessage(createTemplate(type, messageText, buttonText));
+  message.addEventListener('click', ({target}) => {
+    if (target.closest(`.${type}__button`) || !target.closest(`.${type}__inner`)) {
+      closeMessage();
+    }
+  });
   document.body.append(message);
-  setTimeout(() => document.querySelector('.error-upload-message').remove(), ERROR_RENDER_MESSAGE_TIMEOUT);
+  document.body.addEventListener('keydown', documentKeydownHandler);
+  if (!document.body.classList.contains('modal-open')) {
+    document.body.classList.add('modal-open');
+    return;
+  }
+  isOpen = true;
 };
 
-export { showErrorMessage, createUploadErrorMessage, createUploadSuccessMessage };
+export { showMessage };

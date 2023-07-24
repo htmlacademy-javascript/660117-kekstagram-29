@@ -22,7 +22,7 @@ const createComment = (comment) => {
   return newComment;
 };
 
-const setloadCommentsButtonState = () => {
+const setCommentsButtonState = () => {
   if (shownElements >= comments.length) {
     loadCommentsButton.classList.add('hidden');
     return;
@@ -39,7 +39,7 @@ const createCommentsList = () => {
   const currentComments = comments.slice(shownElements, shownElements + COMMENTS_COUNTER);
   currentComments.forEach((comment) => commentsList.append(createComment(comment)));
   shownElements = Math.min(comments.length, shownElements + COMMENTS_COUNTER);
-  setloadCommentsButtonState();
+  setCommentsButtonState();
   fillCommentCounter();
 };
 
