@@ -14,7 +14,7 @@ const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const inputChecked = document.querySelector('.img-upload__form input:checked');
 const submitButton = document.querySelector('.img-upload__submit');
 
-const setSubmitButton = (state) => {
+const setSubmitButtonState = (state) => {
   submitButton.disabled = state;
 };
 
@@ -49,10 +49,10 @@ const imgUploadInputChangeHandler = () => {
 const imgUploadFormSubmitHandler = (event) => {
   event.preventDefault();
   if (pristineValidate()) {
-    setSubmitButton(true);
     document.body.removeEventListener('keydown', documentKeydownHandler);
+    setSubmitButtonState(true);
     const formData = new FormData(event.target);
-    sendData(SERVER_URL, formData, closeForm, setSubmitButton);
+    sendData(SERVER_URL, formData, closeForm, setSubmitButtonState);
   }
 };
 
