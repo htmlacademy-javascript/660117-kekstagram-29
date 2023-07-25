@@ -33,7 +33,7 @@ function documentKeydownHandler(event) {
   if (isEscKey(event) && !event.target.closest('.img-upload__field-wrapper') && !document.querySelector('.error')) {
     closeForm();
   }
-};
+}
 
 const openForm = () => {
   imgUploadOverlay.classList.remove('hidden');
