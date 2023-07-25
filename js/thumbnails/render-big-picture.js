@@ -57,6 +57,7 @@ const closeModal = () => {
   pictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loadCommentsButton.removeEventListener('click', loadCommentsButtonClickHandler);
+  document.removeEventListener('keydown', documentKeydownHandler);
   shownElements = 0;
 };
 
@@ -65,7 +66,7 @@ const pictureCloseButtonClickHandler = (event) => {
   closeModal();
 };
 
-const documentKeydownHandler = (event) => {
+function documentKeydownHandler(event) {
   event.preventDefault();
   if (isEscKey(event) && !event.target.closest('.social__footer-text')) {
     closeModal();
@@ -77,7 +78,7 @@ const openModal = () => {
   document.body.classList.add('modal-open');
   loadCommentsButton.addEventListener('click', loadCommentsButtonClickHandler);
   pictureCloseButton.addEventListener('click', pictureCloseButtonClickHandler, {once: true});
-  document.addEventListener('keydown', documentKeydownHandler, {once: true});
+  document.addEventListener('keydown', documentKeydownHandler);
 };
 
 const renderBigPicture = (post) => {

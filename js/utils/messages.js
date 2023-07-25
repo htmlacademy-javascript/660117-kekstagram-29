@@ -1,7 +1,7 @@
 import { isEscKey } from './utils.js';
 
 let message;
-let isOpen = false;
+let isOpen;
 
 const createTemplate = (type, messageText, buttonText) => (
   `<section class="${type}">
@@ -33,6 +33,7 @@ function documentKeydownHandler(event) {
 }
 
 const showMessage = (type, messageText, buttonText) => {
+  isOpen = false;
   message = createMessage(createTemplate(type, messageText, buttonText));
   message.addEventListener('click', ({target}) => {
     if (target.closest(`.${type}__button`) || !target.closest(`.${type}__inner`)) {
