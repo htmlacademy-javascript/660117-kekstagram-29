@@ -71,7 +71,7 @@ function documentKeydownHandler(event) {
   if (isEscKey(event) && !event.target.closest('.social__footer-text')) {
     closeModal();
   }
-};
+}
 
 const openModal = () => {
   pictureContainer.classList.remove('hidden');
