@@ -19,6 +19,7 @@ const setSubmitButtonState = (state) => {
 };
 
 const closeForm = () => {
+  document.body.removeEventListener('keydown', documentKeydownHandler);
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   imgUploadForm.reset();
@@ -28,8 +29,8 @@ const closeForm = () => {
 
 const imgUploadCancelClickHandler = () => closeForm();
 
-const documentKeydownHandler = (event) => {
-  if (isEscKey(event) && !event.target.closest('.img-upload__field-wrapper')) {
+function documentKeydownHandler(event) {
+  if (isEscKey(event) && !event.target.closest('.img-upload__field-wrapper') && !document.querySelector('.error')) {
     closeForm();
   }
 };
@@ -49,7 +50,6 @@ const imgUploadInputChangeHandler = () => {
 const imgUploadFormSubmitHandler = (event) => {
   event.preventDefault();
   if (pristineValidate()) {
-    document.body.removeEventListener('keydown', documentKeydownHandler);
     setSubmitButtonState(true);
     const formData = new FormData(event.target);
     sendData(SERVER_URL, formData, closeForm, setSubmitButtonState);

@@ -1,8 +1,8 @@
-const RANDOM_COUNTER = 10;
-const TIME_OUT = 500;
-
 import { shuffleArray, debounce } from '../utils/utils.js';
 import { renderThumbnails } from './render-thumbnails.js';
+
+const RANDOM_COUNTER = 10;
+const TIME_OUT = 500;
 
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');

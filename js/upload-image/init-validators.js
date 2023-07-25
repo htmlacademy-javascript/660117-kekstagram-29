@@ -16,9 +16,9 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'error-text'
 });
 
-const createHashtags = (value) => value.trimEnd().split(' ');
+const createHashtags = (value) => value.toLowerCase().trimEnd().split(' ');
 
-const compareHashtagsValue = (value) => {
+const validateHashtagsValue = (value) => {
   const hashtags = createHashtags(value);
   const setHashtags = new Set(hashtags);
   return setHashtags.size === hashtags.length;
@@ -34,16 +34,16 @@ const validateHashtags = (value) => {
   return true;
 };
 
-const countHashtags = (value) => {
+const validateHashtagsCount = (value) => {
   const hashtags = createHashtags(value);
   return hashtags.length <= HASHTAG_MAX_COUNTER;
 };
 
 const addValidators = () => {
   pristine.addValidator(textDescription, validateDescription, DESCRIPTION_ERROR_MESSAGE, 1, true);
-  pristine.addValidator(textHashtags, countHashtags, COUNT_HASHTAGS_MESSAGE, 1, true);
+  pristine.addValidator(textHashtags, validateHashtagsCount, COUNT_HASHTAGS_MESSAGE, 1, true);
   pristine.addValidator(textHashtags, validateHashtags, VALIDATE_HASHTAGS_MESSAGE, 1, true);
-  pristine.addValidator(textHashtags, compareHashtagsValue, COMPARE_HASHTAGS_VALUE_MESSAGE, 1, true);
+  pristine.addValidator(textHashtags, validateHashtagsValue, COMPARE_HASHTAGS_VALUE_MESSAGE, 1, true);
 };
 
 const pristineValidate = () => pristine.validate();
